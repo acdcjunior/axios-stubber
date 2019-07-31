@@ -1,0 +1,42 @@
+[
+  {
+    "request": {
+      "method": "GET",
+      "url": "http://master.example.com/info?code=123"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "result": 123456
+      }
+    }
+  },
+
+  {
+    "request": {
+      "method": "POST",
+      "url": "http://bob.example.com/info",
+      "body": {"boo": "ya"}
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "yay": true
+      }
+    }
+  },
+
+  {
+    "request": {
+      "method": "POST",
+      "url": "http://master.example.com/infox",
+      "body": {"boo": "ya3"}
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "yay2": true
+      }
+    }
+  }
+]
