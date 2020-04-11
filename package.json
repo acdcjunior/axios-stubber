@@ -18,12 +18,12 @@
   },
   "homepage": "https://github.com/acdcjunior/axios-stubber#readme",
   "dependencies": {
-    "axios-mock-adapter": "^1.17.0"
+    "axios-mock-adapter": "^1.18.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.16",
     "@types/node": "^12.6.8",
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
