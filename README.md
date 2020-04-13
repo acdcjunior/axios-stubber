@@ -1,5 +1,34 @@
-# axios-axios-stubber
+# axios-stubber
 Simplified axios request and response stubbing.
+
+Stubs `axios` globally, making its calls return as specified in stubs files (or objects).
+
+# Example
+
+```js
+const axios = require('axios');
+const axiosStubber = require('axios-stubber');
+
+test('axios-stubber example', async () => {
+    axiosStubber(axios, {
+        request: {
+            method: "GET",
+            url: "http://w00t.com"
+        },
+        response: {
+            status: 201,
+            body: {
+                yes: "It is"
+            }
+        }
+    }); // the argument could also be an array, a json file, or js file 
+
+    let {data, status} = await axios.get("http://w00t.com");
+
+    expect(data).toStrictEqual({yes: "It is"});
+    expect(status).toStrictEqual(201);
+});
+```
 
 # Usage
 
