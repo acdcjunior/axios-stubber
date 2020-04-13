@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//@ts-ignore
 const path = require("path");
+//@ts-ignore
 const fs = require("fs");
 const findAllFilesInFolder_1 = require("./utils/findAllFilesInFolder");
 function loadStubs(folderOrFileOrObjectOrArray) {

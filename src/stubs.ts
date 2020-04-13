@@ -1,5 +1,7 @@
 import {Stub} from "./Stub";
+//@ts-ignore
 import * as path from "path";
+//@ts-ignore
 import * as fs from "fs";
 import findAllFilesInFolder from "./utils/findAllFilesInFolder";
 
