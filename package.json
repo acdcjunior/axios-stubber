@@ -1,6 +1,6 @@
 {
   "name": "axios-stubber",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.2",
   "description": "Simplified axios request and response stubbing",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,13 @@
     "type": "git",
     "url": "git+https://github.com/acdcjunior/axios-stubber.git"
   },
-  "keywords": ["axios", "stubs", "stubbing", "stubber", "mock"],
+  "keywords": [
+    "axios",
+    "stubs",
+    "stubbing",
+    "stubber",
+    "mock"
+  ],
   "author": "acdcjunior",
   "license": "MIT",
   "bugs": {
