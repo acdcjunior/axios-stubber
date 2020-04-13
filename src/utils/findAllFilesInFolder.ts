@@ -1,4 +1,6 @@
+//@ts-ignore
 import * as fs from "fs";
+//@ts-ignore
 import * as path from "path";
 
 export default function findAllFilesInFolder(dir) {

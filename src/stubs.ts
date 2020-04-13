@@ -3,24 +3,22 @@ import * as path from "path";
 import * as fs from "fs";
 import findAllFilesInFolder from "./utils/findAllFilesInFolder";
 
-export default function loadStubs(folderOrFile: string | any) {
-    const stubs = doLoadStubs(folderOrFile);
+export default function loadStubs(folderOrFileOrObjectOrArray: string | string[] | any[] | any) {
+    const stubs = doLoadStubs(folderOrFileOrObjectOrArray);
     validateNoDuplicatedStubs(stubs);
     return stubs;
 }
 
-function doLoadStubs(folderOrFile: string | any) {
-    if (Array.isArray(folderOrFile)) {
-        if (folderOrFile.length === 0) {
-            throw new Error("Received stubs array is empty.");
-        }
-        if (typeof folderOrFile[0] === "string") {
-            return folderOrFile.flatMap(loadStubsFromFolderOrFile);
-        }
-        return folderOrFile;
-    } else {
-        return loadStubsFromFolderOrFile(folderOrFile);
+function doLoadStubs(folderOrFileOrObjectOrArray: string | string[] | any[] | any) {
+    if (Array.isArray(folderOrFileOrObjectOrArray) && folderOrFileOrObjectOrArray.length === 0) {
+        throw new Error("Received stubs array is empty.");
     }
+    const ffoArray = Array.isArray(folderOrFileOrObjectOrArray) ? folderOrFileOrObjectOrArray : [folderOrFileOrObjectOrArray];
+
+    if (typeof ffoArray[0] === "string") {
+        return ffoArray.flatMap(loadStubsFromFolderOrFile);
+    }
+    return ffoArray;
 }
 
 function loadStubsFromFolderOrFile(folderOrFile: string): Stub[] {

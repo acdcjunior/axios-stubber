@@ -3,25 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const fs = require("fs");
 const findAllFilesInFolder_1 = require("./utils/findAllFilesInFolder");
-function loadStubs(folderOrFile) {
-    const stubs = doLoadStubs(folderOrFile);
+function loadStubs(folderOrFileOrObjectOrArray) {
+    const stubs = doLoadStubs(folderOrFileOrObjectOrArray);
     validateNoDuplicatedStubs(stubs);
     return stubs;
 }
 exports.default = loadStubs;
-function doLoadStubs(folderOrFile) {
-    if (Array.isArray(folderOrFile)) {
-        if (folderOrFile.length === 0) {
-            throw new Error("Received stubs array is empty.");
-        }
-        if (typeof folderOrFile[0] === "string") {
-            return folderOrFile.flatMap(loadStubsFromFolderOrFile);
-        }
-        return folderOrFile;
+function doLoadStubs(folderOrFileOrObjectOrArray) {
+    if (Array.isArray(folderOrFileOrObjectOrArray) && folderOrFileOrObjectOrArray.length === 0) {
+        throw new Error("Received stubs array is empty.");
     }
-    else {
-        return loadStubsFromFolderOrFile(folderOrFile);
+    const ffoArray = Array.isArray(folderOrFileOrObjectOrArray) ? folderOrFileOrObjectOrArray : [folderOrFileOrObjectOrArray];
+    if (typeof ffoArray[0] === "string") {
+        return ffoArray.flatMap(loadStubsFromFolderOrFile);
     }
+    return ffoArray;
 }
 function loadStubsFromFolderOrFile(folderOrFile) {
     let resolvedFolderOrFile = path.resolve(folderOrFile);
@@ -33,7 +29,7 @@ function loadStubsFromFolderOrFile(folderOrFile) {
         return require(resolvedFolderOrFile);
     }
     catch (e) {
-        throw new Error('Error while loading file "' + resolvedFolderOrFile + '": ' + e.message);
+        throw new Error('[AXIOS STUBS] Error while loading stubs file "' + resolvedFolderOrFile + '": ' + e.message);
     }
 }
 function toJSON(o) {
