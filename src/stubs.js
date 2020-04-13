@@ -29,7 +29,12 @@ function loadStubsFromFolderOrFile(folderOrFile) {
         let allFilesInFolder = findAllFilesInFolder_1.default(resolvedFolderOrFile);
         return allFilesInFolder.filter(f => path.extname(f) === 'json').flatMap(require);
     }
-    return require(resolvedFolderOrFile);
+    try {
+        return require(resolvedFolderOrFile);
+    }
+    catch (e) {
+        throw new Error('Error while loading file "' + resolvedFolderOrFile + '": ' + e.message);
+    }
 }
 function toJSON(o) {
     return JSON.stringify(o, null, '  ');

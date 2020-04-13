@@ -29,7 +29,11 @@ function loadStubsFromFolderOrFile(folderOrFile: string): Stub[] {
         let allFilesInFolder = findAllFilesInFolder(resolvedFolderOrFile);
         return allFilesInFolder.filter(f => path.extname(f) === 'json').flatMap(require);
     }
-    return require(resolvedFolderOrFile);
+    try {
+        return require(resolvedFolderOrFile);
+    } catch (e) {
+        throw new Error('[AXIOS STUBS] Error while loading stubs file "'+resolvedFolderOrFile+'": ' + e.message)
+    }
 }
 
 function toJSON(o) {
