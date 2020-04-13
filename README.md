@@ -1,4 +1,7 @@
 # axios-stubber
+
+[![axios-stubber version](https://img.shields.io/npm/v/axios-stubber?color=green)](https://www.npmjs.com/package/axios-stubber)
+
 Simplified axios request and response stubbing.
 
 Stubs `axios` globally, making its calls return as specified in stubs files (or objects).
