@@ -1,0 +1,19 @@
+[
+  {
+    "request": {
+      "method": "POST",
+      "url": "https://reqres.in/api/users",
+      "body": {
+        "test": "t4"
+      }
+    },
+    "response": {
+      "status": 201,
+      "body": {
+        "test": "t4",
+        "id": "999",
+        "createdAt": "2020-01-01T00:00:00.000Z"
+      }
+    }
+  }
+]

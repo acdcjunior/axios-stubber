@@ -34,6 +34,13 @@ function loadStubsFromFile(path) {
     }
     return stringToStubsArray(fs.readFileSync(path, 'utf8'));
 }
+const BODY_METHODS = ['POST', 'PUT'];
+function extractData(config) {
+    if (BODY_METHODS.includes(config.method.toUpperCase()) && (config.headers['Content-Type'] || '').includes('application/json')) {
+        return JSON.parse(config.data);
+    }
+    return config.data;
+}
 function mockRequests(stubsFileName, unmockedAxios, axiosMockAdapter, { includeHeaders }) {
     axiosMockAdapter.onAny().reply((async (config) => {
         const response = await unmockedAxios.request(config);
@@ -48,7 +55,7 @@ function mockRequests(stubsFileName, unmockedAxios, axiosMockAdapter, { includeH
                 method: config.method.toUpperCase(),
                 url: config.url,
                 headers: includeHeaders ? config.headers : undefined,
-                body: config.data
+                body: extractData(config)
             },
             response: {
                 status: response.status,

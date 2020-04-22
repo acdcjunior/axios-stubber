@@ -1,8 +1,7 @@
 const fs = require('fs');
 const axios = require('axios');
 
-// noinspection JSUnresolvedVariable
-const axiosStubsRecorder = require('../../').axiosStubsRecorder;
+const axiosStubsRecorder = require(__dirname + "/../../" + require('../../package.json').main).axiosStubsRecorder;
 
 function deleteIfExists(file) {
     if (fs.existsSync(file)) {
@@ -14,6 +13,10 @@ function verifyFilesHaveEqualContent(actualFileName, expectedFileName, transfome
     let actual = transfomer(fs.readFileSync(actualFileName, 'utf8'));
     let expected = fs.readFileSync(expectedFileName, 'utf8');
     expect(actual).toEqual(expected);
+}
+
+function transformUserCreatedResponse(response) {
+    return response.replace(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ/g, '2020-01-01T00:00:00.000Z').replace(/"id": "\d+",/g, '"id": "999",')
 }
 
 describe('axiosStubsRecorder', () => {
@@ -49,9 +52,7 @@ describe('axiosStubsRecorder', () => {
         await axios.get("https://reqres.in/api/users");
         await axios.get("https://reqres.in/api/users/3");
 
-        verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t2_expected.stubs.json', s => {
-            return s.replace(/\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ/g, '2020-12-25T12:34:56.789Z').replace(/"id": "\d+",/g, '"id": "999",')
-        });
+        verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t2_expected.stubs.json', transformUserCreatedResponse);
     });
 
     it('t3 - update existing', async () => {
@@ -64,6 +65,17 @@ describe('axiosStubsRecorder', () => {
         await axios.get("https://reqres.in/api/users/3");
 
         verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t3_expected.stubs.json');
+    });
+
+    it('t4 - post', async () => {
+        let stubsFileNameToRecord = __dirname + '/recorded-stubs/t4.stubs.json';
+        deleteIfExists(stubsFileNameToRecord);
+
+        axiosMock = axiosStubsRecorder(axios, stubsFileNameToRecord);
+
+        await axios.post("https://reqres.in/api/users", { test: 't4' });
+
+        verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t4_expected.stubs.json', transformUserCreatedResponse);
     });
 
 });
