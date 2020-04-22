@@ -5,8 +5,12 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "outDir": "dist"
   },
+  "include": [
+    "src/**/*"
+  ],
   "compileOnSave": true,
   "buildOnSave": true
 }
