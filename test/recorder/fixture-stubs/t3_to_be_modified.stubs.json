@@ -1,0 +1,14 @@
+[
+  {
+    "request": {
+      "method": "GET",
+      "url": "https://reqres.in/api/users/3"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "stuff": "modify me"
+      }
+    }
+  }
+]

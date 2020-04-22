@@ -1,0 +1,25 @@
+[
+  {
+    "request": {
+      "method": "GET",
+      "url": "https://reqres.in/api/users/3"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "data": {
+          "id": 3,
+          "email": "emma.wong@reqres.in",
+          "first_name": "Emma",
+          "last_name": "Wong",
+          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+        },
+        "ad": {
+          "company": "StatusCode Weekly",
+          "url": "http://statuscode.org/",
+          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+        }
+      }
+    }
+  }
+]
