@@ -4,7 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 
 export default function findAllFilesInFolder(dir) {
-    return fs.readdirSync(dir).map(fileName => {
+    return fs.readdirSync(dir).flatMap(fileName => {
         const fullFile = path.join(dir, fileName);
         if (fs.statSync(fullFile).isDirectory()) {
             return findAllFilesInFolder(fullFile);

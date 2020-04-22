@@ -15,17 +15,18 @@ function doLoadStubs(folderOrFileOrObjectOrArray) {
     if (Array.isArray(folderOrFileOrObjectOrArray) && folderOrFileOrObjectOrArray.length === 0) {
         throw new Error("Received stubs array is empty.");
     }
-    const ffoArray = Array.isArray(folderOrFileOrObjectOrArray) ? folderOrFileOrObjectOrArray : [folderOrFileOrObjectOrArray];
-    if (typeof ffoArray[0] === "string") {
-        return ffoArray.flatMap(loadStubsFromFolderOrFile);
+    const foldersOrFilesOrObjects = Array.isArray(folderOrFileOrObjectOrArray) ? folderOrFileOrObjectOrArray : [folderOrFileOrObjectOrArray];
+    let foldersOrFiles = typeof foldersOrFilesOrObjects[0] === "string";
+    if (foldersOrFiles) {
+        return foldersOrFilesOrObjects.flatMap(loadStubsFromFolderOrFile);
     }
-    return ffoArray;
+    return foldersOrFilesOrObjects;
 }
 function loadStubsFromFolderOrFile(folderOrFile) {
     let resolvedFolderOrFile = path.resolve(folderOrFile);
     if (fs.statSync(resolvedFolderOrFile).isDirectory()) {
         let allFilesInFolder = findAllFilesInFolder_1.default(resolvedFolderOrFile);
-        return allFilesInFolder.filter(f => path.extname(f) === 'json').flatMap(require);
+        return allFilesInFolder.flatMap(require);
     }
     try {
         return require(resolvedFolderOrFile);

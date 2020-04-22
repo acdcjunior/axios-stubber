@@ -1,12 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const generateErrorMessage_1 = require("../src/generateErrorMessage");
-const stubs_1 = require("../src/stubs");
+const generateErrorMessage = require("../src/generateErrorMessage").default;
+const loadStubs = require("../src/stubs").default;
 const stripColors = require('./stripColors');
-describe('x', () => {
-    console.log(2);
-    it('y', () => {
-        expect(stripColors(generateErrorMessage_1.default("GET", "http://bob.com", undefined, stubs_1.default(__dirname + '/stubs'))).trim())
+
+describe('generateErrorMessage', () => {
+
+    it('error message is generated correctly', () => {
+
+        expect(
+            stripColors(generateErrorMessage("GET", "http://bob.com", undefined, loadStubs(__dirname + '/stubs'))).trim())
             .toBe(`No configured request exactly matches the received call.
             
 Received call:
@@ -16,11 +17,19 @@ Received call:
 
 Configured requests (ordered by most similar):
 - method: POST
-  url: http://bob.example.com
+  url: http://bob.example.com/info
  
 
 - method: POST
-  url: http://master.example.com/infox`);
+  url: http://master.example.com/info
+ 
+
+- method: POST
+  url: http://master.example.com/infox
+ 
+
+- method: GET
+  url: http://master.example.com/info?code=123`);
     });
+
 });
-//# sourceMappingURL=generateErrorMessage.test.js.map

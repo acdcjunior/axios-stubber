@@ -1,4 +1,4 @@
-[
+module.exports = [
   {
     "request": {
       "method": "POST",
@@ -12,4 +12,4 @@
       }
     }
   }
-]
+];
