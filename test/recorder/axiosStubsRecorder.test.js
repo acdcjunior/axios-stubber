@@ -67,13 +67,14 @@ describe('axiosStubsRecorder', () => {
         verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t3_expected.stubs.json');
     });
 
-    it('t4 - post', async () => {
+    it('t4 - post (different body == different request)', async () => {
         let stubsFileNameToRecord = __dirname + '/recorded-stubs/t4.stubs.json';
         deleteIfExists(stubsFileNameToRecord);
 
         axiosMock = axiosStubsRecorder(axios, stubsFileNameToRecord);
 
-        await axios.post("https://reqres.in/api/users", { test: 't4' });
+        await axios.post("https://reqres.in/api/users", { test: 't4-1' });
+        await axios.post("https://reqres.in/api/users", { test: 't4-2' });
 
         verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t4_expected.stubs.json', transformUserCreatedResponse);
     });

@@ -56,6 +56,11 @@ function extractData(config) {
     return config.data;
 }
 
+function requestsEqual(currentRequest) {
+    const currentRequestJSON = JSON.stringify(currentRequest);
+    return previouslySavedStub => currentRequestJSON === JSON.stringify(previouslySavedStub.request);
+}
+
 function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, options: StubsRecorderOptions) {
 
     axiosMockAdapter.onAny().reply((async config => {
@@ -63,20 +68,23 @@ function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdap
 
         const stubs = loadStubsFromFile(stubsFileName);
 
-        let stubPreviouslySaved = stubs.find(stub => config.url === stub.request.url && config.method.toUpperCase() === stub.request.method.toUpperCase());
+        let request = {
+            method: config.method.toUpperCase(),
+            url: config.url,
+            headers: options.includeHeaders ? config.headers : undefined,
+            body: extractData(config)
+        };
+
+        let stubPreviouslySaved = stubs.find(requestsEqual(request));
 
         if (!stubPreviouslySaved) {
             stubPreviouslySaved = { };
             stubs.push(stubPreviouslySaved);
+
         }
 
         Object.assign(stubPreviouslySaved, {
-            request: {
-                method: config.method.toUpperCase(),
-                url: config.url,
-                headers: options.includeHeaders ? config.headers : undefined,
-                body: extractData(config)
-            },
+            request,
             response: {
                 status: response.status,
                 headers: options.includeHeaders ? response.headers : undefined,

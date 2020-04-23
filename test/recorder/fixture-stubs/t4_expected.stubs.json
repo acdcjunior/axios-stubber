@@ -4,13 +4,30 @@
       "method": "POST",
       "url": "https://reqres.in/api/users",
       "body": {
-        "test": "t4"
+        "test": "t4-1"
       }
     },
     "response": {
       "status": 201,
       "body": {
-        "test": "t4",
+        "test": "t4-1",
+        "id": "999",
+        "createdAt": "2020-01-01T00:00:00.000Z"
+      }
+    }
+  },
+  {
+    "request": {
+      "method": "POST",
+      "url": "https://reqres.in/api/users",
+      "body": {
+        "test": "t4-2"
+      }
+    },
+    "response": {
+      "status": 201,
+      "body": {
+        "test": "t4-2",
         "id": "999",
         "createdAt": "2020-01-01T00:00:00.000Z"
       }
