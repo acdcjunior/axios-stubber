@@ -1,4 +1,5 @@
 import axiosStubber from './axiosStubber';
-export default axiosStubber;
+import axiosStubsRecorder from './recorder/axiosStubsRecorder';
 
-export { default as axiosStubsRecorder } from './recorder/axiosStubsRecorder';
+export default axiosStubber;
+export { axiosStubber, axiosStubsRecorder };
