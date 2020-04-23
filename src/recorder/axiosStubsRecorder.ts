@@ -21,7 +21,7 @@ export default function axiosStubsRecorder(axios: AxiosInstance, stubsFileName: 
     const unmockedAxios = axios.create();
     currentMockAdapter = new MockAdapter(axios);
 
-    mockRequests(stubsFileName, unmockedAxios, currentMockAdapter, { ...DEFAULT_OPTIONS, ...options });
+    recordRequests(stubsFileName, unmockedAxios, currentMockAdapter, { ...DEFAULT_OPTIONS, ...options });
 
     return currentMockAdapter;
 };
@@ -61,7 +61,7 @@ function requestsEqual(currentRequest) {
     return previouslySavedStub => currentRequestJSON === JSON.stringify(previouslySavedStub.request);
 }
 
-function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, options: StubsRecorderOptions) {
+function recordRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, options: StubsRecorderOptions) {
 
     axiosMockAdapter.onAny().reply((async config => {
         const response = await unmockedAxios.request(config);
@@ -99,4 +99,5 @@ function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdap
 
         return [response.status, response.data, response.headers];
     }) as any);
+
 }
