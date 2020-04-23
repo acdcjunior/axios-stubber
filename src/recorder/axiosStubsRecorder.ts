@@ -4,8 +4,8 @@ import {AxiosInstance} from "axios";
 import {Stub} from "../Stub";
 
 export interface StubsRecorderOptions {
-    includeHeaders: boolean;
-    stubTransformer: (s: Stub) => Stub
+    includeHeaders?: boolean;
+    stubTransformer?: (s: Stub) => Stub
 }
 const DEFAULT_OPTIONS: StubsRecorderOptions = {
     includeHeaders: false,
