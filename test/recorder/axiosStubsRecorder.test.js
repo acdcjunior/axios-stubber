@@ -94,4 +94,7 @@ describe('axiosStubsRecorder', () => {
         verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t5_expected.stubs.json', transformUserCreatedResponse);
     });
 
+    // todo add test in which initial stubs file has duplicated requests. end result should have removed those
+    // todo add a test that transforms the request, so that the transformed request is used for comparison, not the original one
+
 });

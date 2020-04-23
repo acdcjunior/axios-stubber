@@ -11,7 +11,6 @@ function axiosStubsRecorder(axios, stubsFileName, options) {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
-    // @ts-ignore
     const unmockedAxios = axios.create();
     currentMockAdapter = new axios_mock_adapter_1.default(axios);
     recordRequests(stubsFileName, unmockedAxios, currentMockAdapter, { ...DEFAULT_OPTIONS, ...options });
@@ -47,33 +46,43 @@ function extractData(config) {
 }
 function requestsEqual(currentRequest) {
     const currentRequestJSON = JSON.stringify(currentRequest);
-    return previouslySavedStub => currentRequestJSON === JSON.stringify(previouslySavedStub.request);
+    return previouslySavedStub => {
+        let stubJSON = JSON.stringify(previouslySavedStub.request);
+        return currentRequestJSON === stubJSON;
+    };
+}
+function getComparePropsAsJson(s) {
+    // places URL before METHOD when sorting
+    return JSON.stringify({
+        url: s.request.url,
+        method: s.request.method,
+        body: s.request.body,
+        headers: s.request.headers,
+    });
+}
+function compareStubs(a, b) {
+    return getComparePropsAsJson(a).localeCompare(getComparePropsAsJson(b));
 }
 function recordRequests(stubsFileName, unmockedAxios, axiosMockAdapter, options) {
     axiosMockAdapter.onAny().reply((async (config) => {
         const response = await unmockedAxios.request(config);
         const stubs = loadStubsFromFile(stubsFileName);
-        let request = {
-            method: config.method.toUpperCase(),
-            url: config.url,
-            headers: options.includeHeaders ? config.headers : undefined,
-            body: extractData(config)
-        };
-        let stubPreviouslySaved = stubs.find(requestsEqual(request));
-        if (!stubPreviouslySaved) {
-            stubPreviouslySaved = {};
-            stubs.push(stubPreviouslySaved);
-        }
-        Object.assign(stubPreviouslySaved, {
-            request,
+        const newStub = options.stubTransformer({
+            request: {
+                method: config.method.toUpperCase(),
+                url: config.url,
+                headers: options.includeHeaders ? config.headers : undefined,
+                body: extractData(config)
+            },
             response: {
                 status: response.status,
                 headers: options.includeHeaders ? response.headers : undefined,
                 body: response.data,
             }
         });
-        const transformedStubs = stubs.map(options.stubTransformer);
-        transformedStubs.sort((a, b) => (a.request.url + a.request.method.toUpperCase()).localeCompare(b.request.url + b.request.method.toUpperCase()));
+        let stubPreviouslySaved = stubs.find(requestsEqual(newStub.request));
+        let otherStubs = stubPreviouslySaved ? stubs.filter(stub => !requestsEqual(newStub.request)(stub)) : stubs;
+        const transformedStubs = [newStub, ...otherStubs].sort(compareStubs);
         fs.writeFileSync(stubsFileName, JSON.stringify(transformedStubs, null, '  '));
         return [response.status, response.data, response.headers];
     }));

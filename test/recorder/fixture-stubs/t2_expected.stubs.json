@@ -2,75 +2,6 @@
   {
     "request": {
       "method": "GET",
-      "url": "https://reqres.in/api/users/3"
-    },
-    "response": {
-      "status": 200,
-      "body": {
-        "data": {
-          "id": 3,
-          "email": "emma.wong@reqres.in",
-          "first_name": "Emma",
-          "last_name": "Wong",
-          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
-        },
-        "ad": {
-          "company": "StatusCode Weekly",
-          "url": "http://statuscode.org/",
-          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
-        }
-      }
-    }
-  },
-  {
-    "request": {
-      "method": "GET",
-      "url": "https://reqres.in/api/users/4"
-    },
-    "response": {
-      "status": 200,
-      "body": {
-        "data": {
-          "id": 4,
-          "email": "eve.holt@reqres.in",
-          "first_name": "Eve",
-          "last_name": "Holt",
-          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"
-        },
-        "ad": {
-          "company": "StatusCode Weekly",
-          "url": "http://statuscode.org/",
-          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
-        }
-      }
-    }
-  },
-  {
-    "request": {
-      "method": "GET",
-      "url": "https://reqres.in/api/users/5"
-    },
-    "response": {
-      "status": 200,
-      "body": {
-        "data": {
-          "id": 5,
-          "email": "charles.morris@reqres.in",
-          "first_name": "Charles",
-          "last_name": "Morris",
-          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"
-        },
-        "ad": {
-          "company": "StatusCode Weekly",
-          "url": "http://statuscode.org/",
-          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
-        }
-      }
-    }
-  },
-  {
-    "request": {
-      "method": "GET",
       "url": "https://reqres.in/api/users"
     },
     "response": {
@@ -142,6 +73,75 @@
       "body": {
         "id": "999",
         "createdAt": "2020-01-01T00:00:00.000Z"
+      }
+    }
+  },
+  {
+    "request": {
+      "method": "GET",
+      "url": "https://reqres.in/api/users/3"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "data": {
+          "id": 3,
+          "email": "emma.wong@reqres.in",
+          "first_name": "Emma",
+          "last_name": "Wong",
+          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+        },
+        "ad": {
+          "company": "StatusCode Weekly",
+          "url": "http://statuscode.org/",
+          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "method": "GET",
+      "url": "https://reqres.in/api/users/4"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "data": {
+          "id": 4,
+          "email": "eve.holt@reqres.in",
+          "first_name": "Eve",
+          "last_name": "Holt",
+          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"
+        },
+        "ad": {
+          "company": "StatusCode Weekly",
+          "url": "http://statuscode.org/",
+          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "method": "GET",
+      "url": "https://reqres.in/api/users/5"
+    },
+    "response": {
+      "status": 200,
+      "body": {
+        "data": {
+          "id": 5,
+          "email": "charles.morris@reqres.in",
+          "first_name": "Charles",
+          "last_name": "Morris",
+          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/stephenmoon/128.jpg"
+        },
+        "ad": {
+          "company": "StatusCode Weekly",
+          "url": "http://statuscode.org/",
+          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+        }
       }
     }
   }

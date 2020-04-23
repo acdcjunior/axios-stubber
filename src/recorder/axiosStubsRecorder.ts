@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import MockAdapter from 'axios-mock-adapter';
-import {AxiosInstance} from "axios";
+import {AxiosInstance, AxiosStatic} from "axios";
 import {Stub} from "../Stub";
 
 export interface StubsRecorderOptions {
@@ -13,11 +13,10 @@ const DEFAULT_OPTIONS: StubsRecorderOptions = {
 };
 
 let currentMockAdapter;
-export default function axiosStubsRecorder(axios: AxiosInstance, stubsFileName: string, options: StubsRecorderOptions): MockAdapter {
+export default function axiosStubsRecorder(axios: AxiosStatic, stubsFileName: string, options: StubsRecorderOptions): MockAdapter {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
-    // @ts-ignore
     const unmockedAxios = axios.create();
     currentMockAdapter = new MockAdapter(axios);
 
@@ -58,7 +57,24 @@ function extractData(config) {
 
 function requestsEqual(currentRequest) {
     const currentRequestJSON = JSON.stringify(currentRequest);
-    return previouslySavedStub => currentRequestJSON === JSON.stringify(previouslySavedStub.request);
+    return previouslySavedStub => {
+        let stubJSON = JSON.stringify(previouslySavedStub.request);
+        return currentRequestJSON === stubJSON;
+    };
+}
+
+function getComparePropsAsJson(s: Stub) {
+    // places URL before METHOD when sorting
+    return JSON.stringify({
+        url: s.request.url,
+        method: s.request.method,
+        body: s.request.body,
+        headers: s.request.headers,
+    });
+}
+
+function compareStubs(a: Stub, b: Stub) {
+    return getComparePropsAsJson(a).localeCompare(getComparePropsAsJson(b));
 }
 
 function recordRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, options: StubsRecorderOptions) {
@@ -68,23 +84,13 @@ function recordRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAd
 
         const stubs = loadStubsFromFile(stubsFileName);
 
-        let request = {
-            method: config.method.toUpperCase(),
-            url: config.url,
-            headers: options.includeHeaders ? config.headers : undefined,
-            body: extractData(config)
-        };
-
-        let stubPreviouslySaved = stubs.find(requestsEqual(request));
-
-        if (!stubPreviouslySaved) {
-            stubPreviouslySaved = { };
-            stubs.push(stubPreviouslySaved);
-
-        }
-
-        Object.assign(stubPreviouslySaved, {
-            request,
+        const newStub  = options.stubTransformer({
+            request: {
+                method: config.method.toUpperCase(),
+                url: config.url,
+                headers: options.includeHeaders ? config.headers : undefined,
+                body: extractData(config)
+            },
             response: {
                 status: response.status,
                 headers: options.includeHeaders ? response.headers : undefined,
@@ -92,8 +98,10 @@ function recordRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAd
             }
         });
 
-        const transformedStubs: Stub[] = stubs.map(options.stubTransformer);
-        transformedStubs.sort((a, b) => (a.request.url + a.request.method.toUpperCase()).localeCompare(b.request.url + b.request.method.toUpperCase()));
+        let stubPreviouslySaved = stubs.find(requestsEqual(newStub.request));
+        let otherStubs = stubPreviouslySaved ? stubs.filter(stub => !requestsEqual(newStub.request)(stub)) : stubs;
+
+        const transformedStubs: Stub[] = [ newStub, ...otherStubs ].sort(compareStubs);
 
         fs.writeFileSync(stubsFileName, JSON.stringify(transformedStubs, null, '  '));
 
