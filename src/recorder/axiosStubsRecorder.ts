@@ -1,9 +1,19 @@
 import * as fs from "fs";
 import MockAdapter from 'axios-mock-adapter';
 import {AxiosInstance} from "axios";
+import {Stub} from "../Stub";
+
+export interface StubsRecorderOptions {
+    includeHeaders: boolean;
+    stubTransformer: (s: Stub) => Stub
+}
+const DEFAULT_OPTIONS: StubsRecorderOptions = {
+    includeHeaders: false,
+    stubTransformer: s => s
+};
 
 let currentMockAdapter;
-export default function axiosStubsRecorder(axios: AxiosInstance, stubsFileName: string, options = { includeHeaders: false }): MockAdapter {
+export default function axiosStubsRecorder(axios: AxiosInstance, stubsFileName: string, options: StubsRecorderOptions): MockAdapter {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
@@ -11,7 +21,7 @@ export default function axiosStubsRecorder(axios: AxiosInstance, stubsFileName: 
     const unmockedAxios = axios.create();
     currentMockAdapter = new MockAdapter(axios);
 
-    mockRequests(stubsFileName, unmockedAxios, currentMockAdapter, options);
+    mockRequests(stubsFileName, unmockedAxios, currentMockAdapter, { ...DEFAULT_OPTIONS, ...options });
 
     return currentMockAdapter;
 };
@@ -46,7 +56,7 @@ function extractData(config) {
     return config.data;
 }
 
-function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, { includeHeaders }) {
+function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdapter, options: StubsRecorderOptions) {
 
     axiosMockAdapter.onAny().reply((async config => {
         const response = await unmockedAxios.request(config);
@@ -64,19 +74,20 @@ function mockRequests(stubsFileName, unmockedAxios: AxiosInstance, axiosMockAdap
             request: {
                 method: config.method.toUpperCase(),
                 url: config.url,
-                headers: includeHeaders ? config.headers : undefined,
+                headers: options.includeHeaders ? config.headers : undefined,
                 body: extractData(config)
             },
             response: {
                 status: response.status,
-                headers: includeHeaders ? response.headers : undefined,
+                headers: options.includeHeaders ? response.headers : undefined,
                 body: response.data,
             }
         });
 
-        stubs.sort((a, b) => (a.request.url + a.request.method.toUpperCase()).localeCompare(b.request.url + b.request.method.toUpperCase()));
+        const transformedStubs: Stub[] = stubs.map(options.stubTransformer);
+        transformedStubs.sort((a, b) => (a.request.url + a.request.method.toUpperCase()).localeCompare(b.request.url + b.request.method.toUpperCase()));
 
-        fs.writeFileSync(stubsFileName, JSON.stringify(stubs, null, '  '));
+        fs.writeFileSync(stubsFileName, JSON.stringify(transformedStubs, null, '  '));
 
         return [response.status, response.data, response.headers];
     }) as any);

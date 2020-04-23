@@ -78,4 +78,19 @@ describe('axiosStubsRecorder', () => {
         verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t4_expected.stubs.json', transformUserCreatedResponse);
     });
 
+    it('t5 - transform function', async () => {
+        let stubsFileNameToRecord = __dirname + '/recorded-stubs/t5.stubs.json';
+        deleteIfExists(stubsFileNameToRecord);
+
+        axiosMock = axiosStubsRecorder(axios, stubsFileNameToRecord, { stubTransformer: (stub) => {
+            return {
+                request: { ...stub.request, body: { ...stub.request.body, fieldToBeTransformed: stub.request.body.fieldToBeTransformed.toUpperCase() + "!?" } },
+                response: { ...stub.response, body: { ...stub.response.body, fieldToBeTransformed: stub.response.body.fieldToBeTransformed.toUpperCase() + "?!" } } }
+        }});
+
+        await axios.post("https://reqres.in/api/users", { fieldToBeTransformed: 'xvalue' });
+
+        verifyFilesHaveEqualContent(stubsFileNameToRecord, __dirname + '/fixture-stubs/t5_expected.stubs.json', transformUserCreatedResponse);
+    });
+
 });
