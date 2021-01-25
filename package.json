@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.16",
     "@types/node": "^12.6.8",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
