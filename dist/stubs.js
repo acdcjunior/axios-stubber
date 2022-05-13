@@ -25,7 +25,7 @@ function doLoadStubs(folderOrFileOrObjectOrArray) {
 function loadStubsFromFolderOrFile(folderOrFile) {
     let resolvedFolderOrFile = path.resolve(folderOrFile);
     if (fs.statSync(resolvedFolderOrFile).isDirectory()) {
-        let allFilesInFolder = findAllFilesInFolder_1.default(resolvedFolderOrFile);
+        let allFilesInFolder = (0, findAllFilesInFolder_1.default)(resolvedFolderOrFile);
         return allFilesInFolder.flatMap(require);
     }
     try {

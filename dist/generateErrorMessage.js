@@ -10,7 +10,7 @@ function generateErrorMessage(method, url, data, stubs) {
         }; // guarantee prop order
         return {
             request: stubRequest,
-            similarity: stringSimilarity_1.default(JSON.stringify(receivedRequest), JSON.stringify(stubRequest))
+            similarity: (0, stringSimilarity_1.default)(JSON.stringify(receivedRequest), JSON.stringify(stubRequest))
         };
     });
     stubsWithSimilarity.sort((scs1, scs2) => scs2.similarity - scs1.similarity);

@@ -12,12 +12,11 @@
           "email": "emma.wong@reqres.in",
           "first_name": "Emma",
           "last_name": "Wong",
-          "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+          "avatar": "https://reqres.in/img/faces/3-image.jpg"
         },
-        "ad": {
-          "company": "StatusCode Weekly",
-          "url": "http://statuscode.org/",
-          "text": "A weekly newsletter focusing on software development, infrastructure, the server, performance, and the stack end of things."
+        "support": {
+          "url": "https://reqres.in/#support-heading",
+          "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
         }
       }
     }

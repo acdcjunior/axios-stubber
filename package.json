@@ -1,6 +1,6 @@
 {
   "name": "axios-stubber",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "Simplified axios request and response stubbing",
   "main": "dist/index.js",
   "types": "src",
@@ -25,16 +25,16 @@
   },
   "homepage": "https://github.com/acdcjunior/axios-stubber#readme",
   "dependencies": {
-    "axios-mock-adapter": "^1.18.1"
+    "axios-mock-adapter": "^1.20.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.16",
-    "@types/node": "^12.6.8",
-    "axios": "^0.21.1",
-    "jest": "^24.8.0",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.5.3"
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.33",
+    "axios": "^0.27.2",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.2",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
   },
   "engines": {
     "node": ">= 11.0.0"

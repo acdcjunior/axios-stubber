@@ -9,7 +9,7 @@ function axiosStubber(axios, folderOrFileOrObjectOrArray) {
         currentMockAdapter.restore();
     }
     currentMockAdapter = new axios_mock_adapter_1.default(axios);
-    mockRequests(currentMockAdapter, stubs_1.default(folderOrFileOrObjectOrArray));
+    mockRequests(currentMockAdapter, (0, stubs_1.default)(folderOrFileOrObjectOrArray));
     return currentMockAdapter;
 }
 exports.default = axiosStubber;
@@ -31,7 +31,7 @@ function mockRequests(axiosMockAdapter, stubs) {
         let method = config.method;
         let url = config.url;
         let data = config.data;
-        throw new Error(generateErrorMessage_1.default(method, url, data, stubs));
+        throw new Error((0, generateErrorMessage_1.default)(method, url, data, stubs));
     }));
 }
 //# sourceMappingURL=axiosStubber.js.map

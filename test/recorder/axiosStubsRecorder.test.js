@@ -48,7 +48,7 @@ describe('axiosStubsRecorder', () => {
 
         await axios.get("https://reqres.in/api/users/4");
         await axios.get("https://reqres.in/api/users/5");
-        await axios.post("https://reqres.in/api/users");
+        // await axios.post("https://reqres.in/api/users");
         await axios.get("https://reqres.in/api/users");
         await axios.get("https://reqres.in/api/users/3");
 
