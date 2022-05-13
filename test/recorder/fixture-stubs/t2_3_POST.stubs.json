@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "https://reqres.in/api/users"
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "853",
+      "createdAt": "2022-05-13T22:41:04.404Z"
+    }
+  }
+},
