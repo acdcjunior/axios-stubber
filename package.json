@@ -1,6 +1,6 @@
 {
   "name": "axios-stubber",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Simplified axios request and response stubbing",
   "main": "dist/index.js",
   "types": "src",

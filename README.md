@@ -14,8 +14,8 @@ yarn add --dev axios-stubber
 # axiosStubber
 
 ```js
-const axios = require('axios');
-const axiosStubber = require('axios-stubber');
+import axios from 'axios';
+import axiosStubber from 'axios-stubber';
 
 test('axios-stubber example', async () => {
     axiosStubber(axios, {
@@ -38,19 +38,13 @@ test('axios-stubber example', async () => {
 });
 ```
 
-# Usage
-
-```sh
-  npm i -D axios-stubber
-```
-
 Test file:
 
 ```js
 const go = require('./go');
-const axios = require('axios');
 
-const axiosStubber = require('axios-stubber');
+import axios from 'axios';
+import axiosStubber from 'axios-stubber';
 
 describe('axiosStubber', () => {
 
@@ -110,7 +104,7 @@ describe('axiosStubber', () => {
 Intercepts all axios calls and generates a stubs file for later use.
 
 ```js
-const axiosStubsRecorder = require('axios-stubber').axiosStubsRecorder;
+import { axiosStubsRecorder } from 'axios-stubber';
 
 test('t1 - save to new file', async () => {
     const axiosMockControl = axiosStubsRecorder(axios, 'my.stubs.json');

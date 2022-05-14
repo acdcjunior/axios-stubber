@@ -12,67 +12,65 @@ const VERBS = [
     "options",
     "list",
 ];
-function adapter() {
-    return function (config) {
-        const mockAdapter = this;
-        // axios >= 0.13.0 only passes the config and expects a promise to be
-        // returned. axios < 0.13.0 passes (config, resolve, reject).
-        if (arguments.length === 3) {
-            (0, handle_request_1.default)(mockAdapter, arguments[0], arguments[1], arguments[2]);
-        }
-        else {
-            return new Promise(function (resolve, reject) {
-                (0, handle_request_1.default)(mockAdapter, resolve, reject, config);
-            });
-        }
-    }.bind(this);
-}
 function getVerbObject() {
-    return VERBS.reduce(function (accumulator, verb) {
-        accumulator[verb] = [];
-        return accumulator;
-    }, {});
+    return VERBS.reduce((accumulator, verb) => { accumulator[verb] = []; return accumulator; }, {});
 }
-function reset() {
-    resetHandlers.call(this);
-    resetHistory.call(this);
-}
-function resetHandlers() {
-    this.handlers = getVerbObject();
-}
-function resetHistory() {
-    this.history = getVerbObject();
-}
-function MockAdapter(axiosInstance, options) {
-    reset.call(this);
-    if (axiosInstance) {
+class AxiosMockAdapter {
+    axiosInstance;
+    originalAdapter;
+    delayResponse;
+    onNoMatch;
+    handlers;
+    history;
+    constructor(axiosInstance, options) {
+        this.reset();
+        if (!axiosInstance)
+            throw new Error("Please provide an instance of axios to mock");
         this.axiosInstance = axiosInstance;
         this.originalAdapter = axiosInstance.defaults.adapter;
-        this.delayResponse =
-            options && options.delayResponse > 0 ? options.delayResponse : null;
-        this.onNoMatch = (options && options.onNoMatch) || null;
-        axiosInstance.defaults.adapter = this.adapter.call(this);
+        this.delayResponse = options?.delayResponse > 0 ? options.delayResponse : null;
+        this.onNoMatch = options?.onNoMatch ?? null;
+        axiosInstance.defaults.adapter = this.adapter();
     }
-    else {
-        throw new Error("Please provide an instance of axios to mock");
+    adapter() {
+        return function (config) {
+            const mockAdapter = this;
+            // axios >= 0.13.0 only passes the config and expects a promise to be
+            // returned. axios < 0.13.0 passes (config, resolve, reject).
+            if (arguments.length === 3) {
+                (0, handle_request_1.default)(mockAdapter, arguments[0], arguments[1], arguments[2]);
+            }
+            else {
+                return new Promise(function (resolve, reject) {
+                    (0, handle_request_1.default)(mockAdapter, resolve, reject, config);
+                });
+            }
+        }.bind(this);
+    }
+    restore() {
+        if (this.axiosInstance) {
+            this.axiosInstance.defaults.adapter = this.originalAdapter;
+            this.axiosInstance = undefined;
+        }
+    }
+    ;
+    reset() {
+        this.resetHandlers();
+        this.resetHistory();
+    }
+    resetHandlers() {
+        this.handlers = getVerbObject();
+    }
+    resetHistory() {
+        this.history = getVerbObject();
     }
 }
-exports.default = MockAdapter;
-MockAdapter.prototype.adapter = adapter;
-MockAdapter.prototype.restore = function restore() {
-    if (this.axiosInstance) {
-        this.axiosInstance.defaults.adapter = this.originalAdapter;
-        this.axiosInstance = undefined;
-    }
-};
-MockAdapter.prototype.reset = reset;
-MockAdapter.prototype.resetHandlers = resetHandlers;
-MockAdapter.prototype.resetHistory = resetHistory;
-VERBS.concat("any").forEach(function (method) {
+exports.default = AxiosMockAdapter;
+VERBS.concat("any").forEach(method => {
     const methodName = "on" + method.charAt(0).toUpperCase() + method.slice(1);
-    MockAdapter.prototype[methodName] = function (matcher, body, requestHeaders) {
+    AxiosMockAdapter.prototype[methodName] = function (matcherArg, body, requestHeaders) {
         const _this = this;
-        var matcher = matcher === undefined ? /.*/ : matcher;
+        const matcher = matcherArg === undefined ? /.*/ : matcherArg;
         function reply(code, response, headers) {
             const handler = [matcher, body, requestHeaders, code, response, headers];
             addHandler(method, _this.handlers, handler);
