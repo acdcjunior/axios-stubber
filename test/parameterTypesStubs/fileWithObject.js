@@ -1,7 +1,7 @@
 module.exports = {
   request: {
     method: "GET",
-    url: "http://w00t.com"
+    url: "https://w00t.com"
   },
   response: {
     status: 201,

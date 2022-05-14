@@ -1,7 +1,8 @@
 const fs = require('fs');
 const axios = require('axios');
+const { axiosStubsRecorder } = require('../../src')
 
-const axiosStubsRecorder = require(__dirname + "/../../" + require('../../package.json').main).axiosStubsRecorder;
+
 
 function deleteIfExists(file) {
     if (fs.existsSync(file)) {

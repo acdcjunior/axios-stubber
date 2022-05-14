@@ -1,7 +1,7 @@
 import * as fs from "fs";
-import MockAdapter from 'axios-mock-adapter';
 import {AxiosInstance, AxiosStatic} from "axios";
 import {Stub} from "../Stub";
+import MockAdapter from "../mock-adapter/mock-adapter";
 
 export interface StubsRecorderOptions {
     includeHeaders?: boolean;
@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS: StubsRecorderOptions = {
 };
 
 let currentMockAdapter;
-export default function axiosStubsRecorder(axios: AxiosStatic, stubsFileName: string, options: StubsRecorderOptions): MockAdapter {
+export default function axiosStubsRecorder(axios: AxiosStatic, stubsFileName: string, options?: StubsRecorderOptions): typeof MockAdapter {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }

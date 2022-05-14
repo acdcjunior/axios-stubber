@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios_mock_adapter_1 = require("axios-mock-adapter");
 const generateErrorMessage_1 = require("./generateErrorMessage");
 const stubs_1 = require("./stubs");
+const mock_adapter_1 = require("./mock-adapter/mock-adapter");
 let currentMockAdapter;
 function axiosStubber(axios, folderOrFileOrObjectOrArray) {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
-    currentMockAdapter = new axios_mock_adapter_1.default(axios);
+    currentMockAdapter = new mock_adapter_1.default(axios);
     mockRequests(currentMockAdapter, (0, stubs_1.default)(folderOrFileOrObjectOrArray));
     return currentMockAdapter;
 }

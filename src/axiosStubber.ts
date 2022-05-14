@@ -1,10 +1,10 @@
-import MockAdapter from 'axios-mock-adapter';
 import generateErrorMessage from "./generateErrorMessage";
 import loadStubs from "./stubs";
 import {AxiosInstance} from "axios";
+import MockAdapter from "./mock-adapter/mock-adapter";
 
 let currentMockAdapter;
-export default function axiosStubber(axios: AxiosInstance, folderOrFileOrObjectOrArray: string | string[] | any[] | any): MockAdapter {
+export default function axiosStubber(axios: AxiosInstance, folderOrFileOrObjectOrArray: string | string[] | any[] | any): typeof MockAdapter {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }

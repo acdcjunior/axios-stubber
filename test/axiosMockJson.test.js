@@ -1,8 +1,7 @@
 const go = require('./go');
 const axios = require('axios');
 
-// noinspection JSUnresolvedVariable
-const axiosStubber = require('../').default;
+const axiosStubber = require('../src').default;
 
 describe('axiosStubber', () => {
 
@@ -42,7 +41,7 @@ describe('axiosStubber', () => {
             {
                 request: {
                     method: "GET",
-                    url: "http://w00t.com"
+                    url: "https://w00t.com"
                 },
                 response: {
                     status: 201,
@@ -53,7 +52,7 @@ describe('axiosStubber', () => {
             }
         ]);
 
-        let {data, status} = await axios.get("http://w00t.com");
+        let {data, status} = await axios.get("https://w00t.com");
         expect(data).toStrictEqual({yes: "It is"});
         expect(status).toStrictEqual(201);
     });
