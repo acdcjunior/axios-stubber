@@ -2,20 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const handle_request_1 = require("./handle-request");
 const utils = require("./utils");
-const VERBS = [
-    "get",
-    "post",
-    "head",
-    "delete",
-    "patch",
-    "put",
-    "options",
-    "list",
-];
-function getVerbObject() {
-    return VERBS.reduce((accumulator, verb) => { accumulator[verb] = []; return accumulator; }, {});
-}
-class AxiosMockAdapter {
+class AxiosStubberAdapter {
     axiosInstance;
     originalAdapter;
     delayResponse;
@@ -65,10 +52,23 @@ class AxiosMockAdapter {
         this.history = getVerbObject();
     }
 }
-exports.default = AxiosMockAdapter;
+exports.default = AxiosStubberAdapter;
+const VERBS = [
+    "get",
+    "post",
+    "head",
+    "delete",
+    "patch",
+    "put",
+    "options",
+    "list",
+];
+function getVerbObject() {
+    return VERBS.reduce((accumulator, verb) => { accumulator[verb] = []; return accumulator; }, {});
+}
 VERBS.concat("any").forEach(method => {
     const methodName = "on" + method.charAt(0).toUpperCase() + method.slice(1);
-    AxiosMockAdapter.prototype[methodName] = function (matcherArg, body, requestHeaders) {
+    AxiosStubberAdapter.prototype[methodName] = function (matcherArg, body, requestHeaders) {
         const _this = this;
         const matcher = matcherArg === undefined ? /.*/ : matcherArg;
         function reply(code, response, headers) {
@@ -171,4 +171,4 @@ function addHandler(method, handlers, handler) {
         }
     }
 }
-//# sourceMappingURL=mock-adapter.js.map
+//# sourceMappingURL=adapter.js.map

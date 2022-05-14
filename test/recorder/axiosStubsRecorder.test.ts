@@ -1,4 +1,4 @@
-import AxiosMockAdapter from "../../src/mock-adapter/mock-adapter";
+import AxiosStubberAdapter from "../../src/adapter/adapter";
 
 const fs = require('fs');
 const axios = require('axios');
@@ -24,7 +24,7 @@ function transformUserCreatedResponse(response) {
 
 describe('axiosStubsRecorder', () => {
 
-    let axiosMock: AxiosMockAdapter;
+    let axiosMock: AxiosStubberAdapter;
     afterEach(() => {
         if (axiosMock) axiosMock.restore();
     });

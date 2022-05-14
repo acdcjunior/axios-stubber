@@ -1,14 +1,14 @@
 import generateErrorMessage from "./generateErrorMessage";
 import loadStubs from "./stubs";
 import {AxiosInstance} from "axios";
-import AxiosMockAdapter from "./mock-adapter/mock-adapter";
+import AxiosStubberAdapter from "./adapter/adapter";
 
-let currentMockAdapter: AxiosMockAdapter;
-export default function axiosStubber(axios: AxiosInstance, folderOrFileOrObjectOrArray: string | string[] | any[] | any): AxiosMockAdapter {
+let currentMockAdapter: AxiosStubberAdapter;
+export default function axiosStubber(axios: AxiosInstance, folderOrFileOrObjectOrArray: string | string[] | any[] | any): AxiosStubberAdapter {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
-    currentMockAdapter = new AxiosMockAdapter(axios);
+    currentMockAdapter = new AxiosStubberAdapter(axios);
 
     mockRequests(currentMockAdapter, loadStubs(folderOrFileOrObjectOrArray));
 

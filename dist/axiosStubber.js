@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const generateErrorMessage_1 = require("./generateErrorMessage");
 const stubs_1 = require("./stubs");
-const mock_adapter_1 = require("./mock-adapter/mock-adapter");
+const adapter_1 = require("./adapter/adapter");
 let currentMockAdapter;
 function axiosStubber(axios, folderOrFileOrObjectOrArray) {
     if (currentMockAdapter) {
         currentMockAdapter.restore();
     }
-    currentMockAdapter = new mock_adapter_1.default(axios);
+    currentMockAdapter = new adapter_1.default(axios);
     mockRequests(currentMockAdapter, (0, stubs_1.default)(folderOrFileOrObjectOrArray));
     return currentMockAdapter;
 }

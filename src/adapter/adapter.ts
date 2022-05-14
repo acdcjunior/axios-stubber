@@ -1,33 +1,16 @@
-"use strict";
-
 import handleRequest from "./handle-request";
 import * as utils from "./utils";
-import { AxiosAdapter } from "axios";
+import { AxiosAdapter, AxiosInstance } from "axios";
 
-const VERBS = [
-  "get",
-  "post",
-  "head",
-  "delete",
-  "patch",
-  "put",
-  "options",
-  "list",
-];
-
-function getVerbObject() {
-  return VERBS.reduce((accumulator, verb) => { accumulator[verb] = []; return accumulator; }, {});
-}
-
-export default class AxiosMockAdapter {
-  private axiosInstance: any;
+export default class AxiosStubberAdapter {
+  private axiosInstance: AxiosInstance;
   private readonly originalAdapter: AxiosAdapter;
-  private delayResponse: any;
+  private delayResponse: number | null;
   private onNoMatch: any;
   private handlers: {};
   private history: {};
 
-  constructor(axiosInstance, options?) {
+  constructor(axiosInstance: AxiosInstance, options?) {
     this.reset();
 
     if (!axiosInstance) throw new Error("Please provide an instance of axios to mock");
@@ -76,10 +59,25 @@ export default class AxiosMockAdapter {
 
 }
 
+const VERBS = [
+  "get",
+  "post",
+  "head",
+  "delete",
+  "patch",
+  "put",
+  "options",
+  "list",
+];
+
+function getVerbObject() {
+  return VERBS.reduce((accumulator, verb) => { accumulator[verb] = []; return accumulator; }, {});
+}
+
 VERBS.concat("any").forEach(method => {
   const methodName = "on" + method.charAt(0).toUpperCase() + method.slice(1);
 
-  AxiosMockAdapter.prototype[methodName] = function (matcherArg, body, requestHeaders) {
+  AxiosStubberAdapter.prototype[methodName] = function (matcherArg, body, requestHeaders) {
     const _this = this;
     const matcher = matcherArg === undefined ? /.*/ : matcherArg;
 

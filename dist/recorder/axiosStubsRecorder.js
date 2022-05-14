@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require("fs");
-const mock_adapter_1 = require("../mock-adapter/mock-adapter");
+const adapter_1 = require("../adapter/adapter");
 const DEFAULT_OPTIONS = {
     includeHeaders: false,
     stubTransformer: s => s
@@ -12,7 +12,7 @@ function axiosStubsRecorder(axios, stubsFileName, options) {
         currentMockAdapter.restore();
     }
     const unmockedAxios = axios.create();
-    currentMockAdapter = new mock_adapter_1.default(axios);
+    currentMockAdapter = new adapter_1.default(axios);
     recordRequests(stubsFileName, unmockedAxios, currentMockAdapter, { ...DEFAULT_OPTIONS, ...options });
     return currentMockAdapter;
 }
